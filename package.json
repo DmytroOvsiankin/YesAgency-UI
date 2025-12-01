@@ -3,19 +3,42 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
+    "prebuild": "expo prebuild --clean",
+    "start": "expo start --dev-client",
+    "ios": "expo run:ios --device",
+    "android": "expo run:android --device",
+    "build:dev:android": "npx eas build --profile development-simulator --platform android",
+    "build:dev:ios": "npx eas build --profile development-simulator --platform ios",
+    "build:staging": "npx eas build --profile preview --clear-cache",
+    "release:staging": "npx eas update --clear-cache --branch preview",
+    "submit:ios": "npx eas submit -p ios",
+    "submit:android": "npx eas submit -p android",
+    "lint": "eslint --fix --ext .js,.ts,.tsx,.jsx .",
+    "eject": "expo eject",
+    "ts:check": "tsc",
+    "build:production": "npx eas build --profile production --clear-cache --auto-submit",
+    "release:production": "npx eas update --clear-cache --branch production"
   },
   "dependencies": {
+    "@expo/config-plugins": "^54.0.2",
     "expo": "~54.0.25",
+    "expo-apple-authentication": "^8.0.7",
+    "expo-font": "^14.0.9",
+    "expo-location": "^19.0.7",
     "expo-status-bar": "~3.0.8",
+    "expo-updates": "~29.0.13",
     "react": "19.1.0",
-    "react-native": "0.81.5"
+    "react-native": "0.81.5",
+    "react-native-reanimated": "^4.1.5",
+    "react-native-svg-transformer": "^1.5.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.28.5",
     "@types/react": "~19.1.0",
+    "babel-preset-expo": "^54.0.7",
+    "eslint-plugin-react": "^7.37.5",
+    "expo-build-properties": "^1.0.9",
+    "expo-dev-client": "^6.0.18",
     "typescript": "~5.9.2"
   },
   "private": true
