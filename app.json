@@ -1,0 +1,77 @@
+{
+  "expo": {
+    "name": "yesagencyapp",
+    "slug": "yesagencyapp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "scheme": "com.yesagencyapp",
+    "ios": {
+      "supportsTablet": true,
+      "backgroundColor": "#FFFFFF",
+      "bundleIdentifier": "com.yesagencyapp.ios",
+      "usesAppleSignIn": true,
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "infoPlist": {
+        "NSCameraUsageDescription": "Granting camera access allows you to scan QR codes",
+        "NSLocationWhenInUseUsageDescription": "Yes Agency uses your location for displaying job location",
+        "NSLocationAlwaysUsageDescription": "Turning on location services allows us to show you job location",
+        "NSLocationUsageDescription": "Turning on location services allows us to show you job location"
+      }
+    },
+    "android": {
+      "package": "com.yesagencyapp",
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.CAMERA",
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.CAMERA"
+      ]
+    },
+    "plugins": [
+      "expo-apple-authentication",
+      "expo-font",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "18183dbd-ecda-4653-93f4-9113f9fcc577"
+      }
+    },
+    "owner": "yesagency",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/18183dbd-ecda-4653-93f4-9113f9fcc577"
+    }
+  }
+}
