@@ -18,6 +18,7 @@ export interface PasswordInputProps extends TextInputProps {
   label: string;
   placeholder: string;
   value?: string;
+  errorMessage?: string;
   onChangeText?: (text: string) => void;
 
   // Custom style overrides
@@ -32,6 +33,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
   value,
   onChangeText,
   containerStyle,
+  errorMessage,
   ...textInputProps
 }) => {
   const [isSecure, setIsSecure] = useState<boolean>(true);
@@ -53,6 +55,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
         {...textInputProps}
       />
 
+      {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
       <TouchableOpacity style={styles.eyeButton} onPress={toggleSecure} activeOpacity={0.7}>
         <ShowPasswordIcon />
       </TouchableOpacity>
@@ -67,14 +70,12 @@ const styles = StyleSheet.create({
     marginBottom: normalize(16),
     position: 'relative',
   },
-
   labelContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 10,
   },
-
   labelText: {
     fontFamily: QUICKSAND_SEMI_B,
     fontStyle: 'normal',
@@ -85,7 +86,6 @@ const styles = StyleSheet.create({
     textAlignVertical: 'bottom',
     marginBottom: 4,
   },
-
   input: {
     height: 56,
     width: '100%',
@@ -98,7 +98,11 @@ const styles = StyleSheet.create({
     color: colors.purpleLight,
     backgroundColor: colors.white,
   },
-
+  errorMessage: {
+    color: '#f53c6b',
+    marginTop: 4,
+    marginLeft: 10,
+  },
   eyeButton: {
     width: 24,
     height: 24,

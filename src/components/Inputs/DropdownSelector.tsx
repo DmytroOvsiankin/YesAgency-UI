@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Modal,
   View,
@@ -9,15 +9,25 @@ import {
   GestureResponderEvent,
 } from 'react-native';
 import Selector from '@/components/Inputs/Selector';
+import SelectedIcon from '@assets/input/selected.svg';
 import { colors } from '@/constants/colors';
+
+export type DropdownOption = {
+  label: string;
+  value: string;
+};
 
 type DropdownSelectorProps = {
   label: string;
-  value?: string; // selected value (value from options)
+  value?: string | string[];
   placeholder: string;
   options: DropdownOption[];
-  onChange: (value: string, option: DropdownOption) => void;
+  /** For multiple = false: (value, option)
+   *  For multiple = true:  (values[], options[])
+   */
+  onChange: (value: string | string[], option: DropdownOption | DropdownOption[]) => void;
   disabled?: boolean;
+  multiple?: boolean;
 };
 
 const DropdownSelector: React.FC<DropdownSelectorProps> = ({
@@ -27,22 +37,81 @@ const DropdownSelector: React.FC<DropdownSelectorProps> = ({
   options,
   onChange,
   disabled,
+  multiple,
 }) => {
   const [visible, setVisible] = useState(false);
+  const [tempSelectedValues, setTempSelectedValues] = useState<string[]>([]);
 
-  const selectedOption = useMemo(() => options.find((o) => o.value === value), [options, value]);
+  const isMultiple = !!multiple;
+
+  /** Sync temp selection when modal opens */
+  useEffect(() => {
+    if (visible) {
+      if (Array.isArray(value)) {
+        setTempSelectedValues(value);
+      } else if (typeof value === 'string' && value) {
+        setTempSelectedValues([value]);
+      } else {
+        setTempSelectedValues([]);
+      }
+    }
+  }, [visible, value]);
+
+  /** Label for main Selector */
+  const selectedLabel = useMemo(() => {
+    if (!value || (Array.isArray(value) && value.length === 0)) return undefined;
+
+    if (Array.isArray(value)) {
+      const selectedOptions = options.filter((o) => value.includes(o.value));
+      if (!selectedOptions.length) return undefined;
+
+      if (selectedOptions.length <= 3) {
+        return selectedOptions.map((o) => o.label).join(', ');
+      }
+
+      const [first, ...rest] = selectedOptions;
+      return `${first.label} + ${rest.length} ďalšie`;
+    }
+
+    const selectedOption = options.find((o) => o.value === value);
+    return selectedOption?.label;
+  }, [options, value]);
 
   const handleOpen = () => {
     if (disabled) return;
     setVisible(true);
   };
 
-  const handleClose = (e?: GestureResponderEvent) => {
+  const handleClose = (_e?: GestureResponderEvent) => {
     setVisible(false);
   };
 
+  const toggleMultiValue = (option: DropdownOption) => {
+    setTempSelectedValues((prev) => {
+      if (prev.includes(option.value)) {
+        return prev.filter((v) => v !== option.value);
+      }
+      return [...prev, option.value];
+    });
+  };
+
   const handleSelect = (option: DropdownOption) => {
-    onChange(option.value, option);
+    if (isMultiple) {
+      toggleMultiValue(option);
+    } else {
+      onChange(option.value, option);
+      setVisible(false);
+    }
+  };
+
+  const handleConfirmMulti = () => {
+    if (!isMultiple) {
+      setVisible(false);
+      return;
+    }
+
+    const selectedOptions = options.filter((o) => tempSelectedValues.includes(o.value));
+    onChange(tempSelectedValues, selectedOptions);
     setVisible(false);
   };
 
@@ -50,10 +119,18 @@ const DropdownSelector: React.FC<DropdownSelectorProps> = ({
     <>
       <Selector
         label={label}
-        value={selectedOption?.label}
+        value={selectedLabel}
         placeholder={placeholder}
         onPress={handleOpen}
-        rightAccessory={<View style={styles.chevronDown} />}
+        rightAccessory={
+          <View
+            style={[
+              styles.chevronDown,
+              visible && styles.chevronDownOpen,
+              disabled && styles.chevronDisabled,
+            ]}
+          />
+        }
       />
 
       <Modal visible={visible} transparent animationType="fade" onRequestClose={handleClose}>
@@ -64,8 +141,12 @@ const DropdownSelector: React.FC<DropdownSelectorProps> = ({
             <FlatList
               data={options}
               keyExtractor={(item) => item.value}
+              keyboardShouldPersistTaps="handled"
               renderItem={({ item }) => {
-                const isSelected = item.value === value;
+                const isSelected = isMultiple
+                  ? tempSelectedValues.includes(item.value)
+                  : item.value === value;
+
                 return (
                   <TouchableOpacity
                     style={[styles.optionRow, isSelected && styles.optionRowSelected]}
@@ -74,14 +155,27 @@ const DropdownSelector: React.FC<DropdownSelectorProps> = ({
                     <Text style={[styles.optionLabel, isSelected && styles.optionLabelSelected]}>
                       {item.label}
                     </Text>
+                    {isMultiple && (
+                      <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
+                        {isSelected && <SelectedIcon />}
+                      </View>
+                    )}
                   </TouchableOpacity>
                 );
               }}
             />
 
-            <TouchableOpacity style={styles.cancelButton} onPress={handleClose}>
-              <Text style={styles.cancelText}>Zrušiť</Text>
-            </TouchableOpacity>
+            <View style={styles.footerRow}>
+              <TouchableOpacity style={styles.cancelButton} onPress={handleClose}>
+                <Text style={styles.cancelText}>Zrušiť</Text>
+              </TouchableOpacity>
+
+              {isMultiple && (
+                <TouchableOpacity style={styles.confirmButton} onPress={handleConfirmMulti}>
+                  <Text style={styles.confirmText}>Hotovo</Text>
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
         </TouchableOpacity>
       </Modal>
@@ -100,6 +194,12 @@ const styles = StyleSheet.create({
     borderColor: colors.purple,
     transform: [{ rotate: '-45deg' }],
     right: 4,
+  },
+  chevronDownOpen: {
+    transform: [{ rotate: '135deg' }],
+  },
+  chevronDisabled: {
+    borderColor: colors.neutralBlack + '60',
   },
   backdrop: {
     flex: 1,
@@ -123,6 +223,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 8,
     borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 4,
   },
   optionRowSelected: {
     backgroundColor: colors.purple + '20', // light overlay
@@ -135,9 +239,25 @@ const styles = StyleSheet.create({
   optionLabelSelected: {
     fontFamily: 'Quicksand-Bold',
   },
-  cancelButton: {
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderRadius: 6,
+    borderWidth: 1.5,
+    borderColor: colors.purple,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  checkboxSelected: {
+    backgroundColor: colors.purple,
+  },
+  footerRow: {
     marginTop: 12,
-    alignSelf: 'flex-end',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 8,
+  },
+  cancelButton: {
     paddingVertical: 6,
     paddingHorizontal: 12,
   },
@@ -145,5 +265,16 @@ const styles = StyleSheet.create({
     fontFamily: 'Quicksand-SemiBold',
     fontSize: 14,
     color: colors.purple,
+  },
+  confirmButton: {
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    borderRadius: 999,
+    backgroundColor: colors.purple,
+  },
+  confirmText: {
+    fontFamily: 'Quicksand-SemiBold',
+    fontSize: 14,
+    color: colors.white,
   },
 });

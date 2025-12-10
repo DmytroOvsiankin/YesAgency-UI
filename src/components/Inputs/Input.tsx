@@ -16,6 +16,7 @@ export interface InputProps extends TextInputProps {
   label: string;
   placeholder: string;
   value?: string;
+  errorMessage?: string;
   onChangeText?: (text: string) => void;
 
   // Custom style overrides
@@ -30,6 +31,7 @@ const Input: React.FC<InputProps> = ({
   value,
   onChangeText,
   containerStyle,
+  errorMessage,
   ...textInputProps
 }) => {
   return (
@@ -46,6 +48,8 @@ const Input: React.FC<InputProps> = ({
         placeholderTextColor={colors.purpleLight}
         {...textInputProps}
       />
+
+      {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
     </View>
   );
 };
@@ -56,14 +60,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginBottom: normalize(16),
   },
-
   labelContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 10,
   },
-
   labelText: {
     fontFamily: QUICKSAND_SEMI_B,
     fontStyle: 'normal',
@@ -74,7 +76,6 @@ const styles = StyleSheet.create({
     textAlignVertical: 'bottom',
     marginBottom: 4,
   },
-
   input: {
     height: 56,
     width: '100%',
@@ -86,6 +87,11 @@ const styles = StyleSheet.create({
     fontFamily: QUICKSAND_MEDIUM,
     color: colors.purpleLight,
     backgroundColor: colors.white,
+  },
+  errorMessage: {
+    color: '#f53c6b',
+    marginTop: 4,
+    marginLeft: 10,
   },
 });
 

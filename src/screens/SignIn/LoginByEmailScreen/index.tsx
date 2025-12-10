@@ -12,7 +12,7 @@ import { SCREENS } from '@/constants/navigation';
 import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import Header from '@/components/Header';
 import Input from '@/components/Inputs/Input';
-import PasswordInput from '@/components/Inputs/PasswortInput';
+import PasswordInput from '@/components/Inputs/PasswordInput';
 import { colors } from '@/constants/colors';
 import { QUICKSAND_REGULAR } from '@/constants/fonts';
 

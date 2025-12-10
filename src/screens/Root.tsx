@@ -8,7 +8,6 @@ import AuthNavigation from '@/navigation/AuthNavigation';
 import { AppNavigation } from '@/navigation/Navigation';
 import { useAuth } from '@/providers/AuthProvider';
 import { logger, setLogAttributes } from '@/utils/logger';
-import { Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();

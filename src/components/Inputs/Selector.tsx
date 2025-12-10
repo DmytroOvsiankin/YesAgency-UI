@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
   },
   labelWrapper: {
     paddingHorizontal: 10,
-    marginBottom: 4,
   },
   labelText: {
     fontFamily: QUICKSAND_SEMI_B,
@@ -85,7 +84,7 @@ const styles = StyleSheet.create({
     color: colors.purpleLight,
   },
   placeholderText: {
-    color: colors.semiPurpleText,
+    color: colors.purpleLight,
   },
   leftAccessory: {
     marginRight: 12,
