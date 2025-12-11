@@ -22,6 +22,18 @@ type UserProfile = {
   };
 };
 
+type JopTypes =
+  | 'helper'
+  | 'hostess'
+  | 'promoter'
+  | 'gastro'
+  | 'bartender'
+  | 'waiter'
+  | 'chef'
+  | 'security'
+  | 'technician'
+  | 'other';
+
 type UpdateProfileData = Pick<Partial<UserProfile>, 'first_name', 'phone_number', 'clothing_size'>;
 
 type ProfileErrors = any;

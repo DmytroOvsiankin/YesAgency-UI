@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View, Text, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { styles } from './styles';
-import { validateEmail, validateString } from '@/utils/validators';
+import { validateString } from '@/utils/validators';
 import { SCREENS } from '@/constants/navigation';
 import RadioButton from '@/components/Inputs/RadioSelector';
 
@@ -46,7 +46,7 @@ const SignUpBusinessInformationScreen = () => {
 
   const onContinue = () => {
     console.log(ID, tradeName);
-    navigation.navigate(SCREENS.SignUpPositionSelectionScreen);
+    navigation.navigate(SCREENS.SignUpPreferencesScreen);
   };
 
   return (

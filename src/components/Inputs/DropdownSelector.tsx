@@ -11,6 +11,7 @@ import {
 import Selector from '@/components/Inputs/Selector';
 import SelectedIcon from '@assets/input/selected.svg';
 import { colors } from '@/constants/colors';
+import { QUICKSAND_BOLD, QUICKSAND_MEDIUM, QUICKSAND_SEMI_B } from '@/constants/fonts';
 
 export type DropdownOption = {
   label: string;
@@ -214,7 +215,7 @@ const styles = StyleSheet.create({
     maxHeight: '70%',
   },
   modalTitle: {
-    fontFamily: 'Quicksand-SemiBold',
+    fontFamily: QUICKSAND_SEMI_B,
     fontSize: 16,
     marginBottom: 12,
     color: colors.neutralBlack,
@@ -232,12 +233,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.purple + '20', // light overlay
   },
   optionLabel: {
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: QUICKSAND_MEDIUM,
     fontSize: 15,
     color: colors.neutralBlack,
   },
   optionLabelSelected: {
-    fontFamily: 'Quicksand-Bold',
+    fontFamily: QUICKSAND_BOLD,
   },
   checkbox: {
     width: 24,
@@ -262,7 +263,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   cancelText: {
-    fontFamily: 'Quicksand-SemiBold',
+    fontFamily: QUICKSAND_SEMI_B,
     fontSize: 14,
     color: colors.purple,
   },
@@ -273,7 +274,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.purple,
   },
   confirmText: {
-    fontFamily: 'Quicksand-SemiBold',
+    fontFamily: QUICKSAND_SEMI_B,
     fontSize: 14,
     color: colors.white,
   },

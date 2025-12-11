@@ -14,7 +14,7 @@ declare global {
     [SCREENS.SignUpSetPasswordScreen]: undefined;
     [SCREENS.SignUpCooperationInformationScreen]: undefined;
     [SCREENS.SignUpBusinessInformationScreen]: undefined;
-    [SCREENS.SignUpPositionSelectionScreen]: undefined;
+    [SCREENS.SignUpPreferencesScreen]: undefined;
   };
 
   type RootStackNavigationProps = StackNavigationProp<RootStackParamList>;

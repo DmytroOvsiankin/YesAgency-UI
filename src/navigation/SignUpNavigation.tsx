@@ -6,7 +6,7 @@ import SignUpBasicInformationScreen from '@/screens/SignUp/BasicInformationScree
 import SignUpSetPasswordScreen from '@/screens/SignUp/SetPasswordScreen';
 import SignUpCooperationInformationScreen from '@/screens/SignUp/CooperationInformationScreen';
 import SignUpBusinessInformationScreen from '@/screens/SignUp/BusinessInformationScreen';
-import SignUpPositionSelectionScreen from '@/screens/SignUp/TypeOfPositionSelectionScreen';
+import SignUpPreferencesScreen from '@/screens/SignUp/PreferencesScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,10 +31,7 @@ const SignUpNavigation = () => {
         name={SCREENS.SignUpBusinessInformationScreen}
         component={SignUpBusinessInformationScreen}
       />
-      <Stack.Screen
-        name={SCREENS.SignUpPositionSelectionScreen}
-        component={SignUpPositionSelectionScreen}
-      />
+      <Stack.Screen name={SCREENS.SignUpPreferencesScreen} component={SignUpPreferencesScreen} />
     </Stack.Navigator>
   );
 };

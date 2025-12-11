@@ -13,6 +13,7 @@ export enum SCREENS {
   SignUpCooperationInformationScreen = 'SignUpCooperationInformationScreen',
   SignUpBusinessInformationScreen = 'SignUpBusinessInformationScreen',
   SignUpPositionSelectionScreen = 'SignUpPositionSelectionScreen',
+  SignUpPreferencesScreen = 'SignUpPreferencesScreen',
 }
 
 export const LINKING_CONFIG: LinkingOptions<RootStackParamList> = {
