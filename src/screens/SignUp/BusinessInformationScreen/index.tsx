@@ -37,7 +37,7 @@ const SignUpBusinessInformationScreen = () => {
     setVAT_numberError(VatNumber_Error);
 
     //remove it
-    onContinue();
+    // onContinue();
 
     if (ID_error || tradeName_Error || TIN_Error) return;
 

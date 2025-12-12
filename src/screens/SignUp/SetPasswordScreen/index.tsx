@@ -25,7 +25,7 @@ const SignUpSetPasswordScreen = () => {
     const isPasswordValid = validatePassword(password);
 
     //remove it
-    onContinue();
+    // onContinue();
 
     if (!isPasswordValid) {
       setPasswordError('Heslo nespĺňa požiadavky');

@@ -62,7 +62,6 @@ export const styles = StyleSheet.create({
     borderRadius: 12,
     flex: 1,
   },
-
   helperIconWrapper: {
     width: 50,
     height: 50,
@@ -70,7 +69,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 12,
   },
-
   textBlock: {
     flex: 1,
     paddingRight: 10,
@@ -91,5 +89,10 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 19,
     color: colors.neutralBlack,
+  },
+  errorMessage: {
+    color: '#f53c6b',
+    marginTop: 4,
+    marginLeft: 10,
   },
 });

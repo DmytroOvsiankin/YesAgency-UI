@@ -53,7 +53,7 @@ const PREFERENCE_ROLES: PreferenceType[] = [
     description: 'Naloží, vyloží, prenesie, postaví, zbalí, asistuje',
     icon: <HelperRoleIcon />,
     value: 'helper',
-    isSelected: true,
+    isSelected: false,
   },
   {
     label: 'Hosteska',
@@ -89,23 +89,71 @@ const SignUpPreferencesScreen = () => {
   const navigation = useNavigation<RootStackNavigationProps>();
 
   const [selectedDistrict, setSelectedDistrict] = useState<string | string[]>([]);
+  const [selectedDistrictError, setSelectedDistrictError] = useState<string>('');
+
   const [selectedAreYouStudent, setSelectedAreYouStudent] = useState<string>('');
+  const [selectedAreYouStudentError, setSelectedAreYouStudentError] = useState<string>('');
+
   const [preferences, setPreferences] = useState<PreferenceType[]>(PREFERENCE_ROLES);
+  const [preferencesError, setPreferencesError] = useState<string>('');
 
   const handleSelect = (value: JopTypes) => {
-    setPreferences((prev) =>
-      prev.map((option) =>
+    setPreferences((prev) => {
+      const updated = prev.map((option) =>
         option.value === value ? { ...option, isSelected: !option.isSelected } : option,
-      ),
-    );
+      );
+
+      // Clear role error once at least one is selected
+      if (updated.some((option) => option.isSelected)) {
+        setPreferencesError('');
+      }
+
+      return updated;
+    });
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+
+    // Clear previous errors
+    setPreferencesError('');
+    setSelectedAreYouStudentError('');
+    setSelectedDistrictError('');
+
+    // 1) At least 1 role
+    const hasRole = preferences.some((option) => option.isSelected);
+    if (!hasRole) {
+      setPreferencesError('Vyberte aspoň 1 úlohu');
+      isValid = false;
+    }
+
+    // 2) Student / not selected
+    if (!selectedAreYouStudent) {
+      setSelectedAreYouStudentError('Vyberte nejaký bod');
+      isValid = false;
+    }
+
+    // 3) At least 1 district
+    const hasDistrict =
+      (Array.isArray(selectedDistrict) && selectedDistrict.length > 0) ||
+      (!Array.isArray(selectedDistrict) && !!selectedDistrict);
+
+    if (!hasDistrict) {
+      setSelectedDistrictError('Vyberte aspoň 1 okres');
+      isValid = false;
+    }
+
+    return isValid;
   };
 
   const handleContinue = () => {
-    onContinue();
-  };
+    //remove it
+    // navigation.navigate(SCREENS.SignUpPhotoScreen);
 
-  const onContinue = () => {
-    navigation.navigate(SCREENS.SignUpBusinessInformationScreen);
+    const isValid = validateForm();
+    if (!isValid) return;
+
+    navigation.navigate(SCREENS.SignUpPhotoScreen);
   };
 
   return (
@@ -124,15 +172,16 @@ const SignUpPreferencesScreen = () => {
 
           <StepIndicator currentStep={5} />
         </View>
+
         <View style={styles.sectionTitleWrapper}>
           <Text style={styles.sectionTitle}>O aké pozície mám záujem:</Text>
         </View>
+
         <ScrollView
           style={{ flex: 1 }}
           contentContainerStyle={styles.container}
           keyboardShouldPersistTaps="handled"
         >
-          {/* Content */}
           <View style={styles.formWrapper}>
             {preferences.map((option) => (
               <View key={option.value} style={styles.checkboxContainer}>
@@ -161,6 +210,9 @@ const SignUpPreferencesScreen = () => {
               </View>
             ))}
 
+            {/* Error: no role selected */}
+            {preferencesError ? <Text style={styles.errorMessage}>{preferencesError}</Text> : null}
+
             <View style={styles.radioTitle}>
               <Text style={styles.sectionTitle}>Mám záujem aj o manažérku pozíciu:</Text>
             </View>
@@ -170,9 +222,17 @@ const SignUpPreferencesScreen = () => {
                 key={option.value}
                 label={option.label}
                 selected={selectedAreYouStudent === option.value}
-                onPress={() => setSelectedAreYouStudent(option.value)}
+                onPress={() => {
+                  setSelectedAreYouStudent(option.value);
+                  setSelectedAreYouStudentError('');
+                }}
               />
             ))}
+
+            {/* Error: no student option chosen */}
+            {selectedAreYouStudentError ? (
+              <Text style={styles.errorMessage}>{selectedAreYouStudentError}</Text>
+            ) : null}
           </View>
 
           <DropdownSelector
@@ -183,8 +243,21 @@ const SignUpPreferencesScreen = () => {
             multiple
             onChange={(newValue) => {
               setSelectedDistrict(newValue);
+
+              const hasDistrict =
+                (Array.isArray(newValue) && newValue.length > 0) ||
+                (!Array.isArray(newValue) && !!newValue);
+
+              if (hasDistrict) {
+                setSelectedDistrictError('');
+              }
             }}
           />
+
+          {/* Error: no district chosen */}
+          {selectedDistrictError ? (
+            <Text style={styles.errorMessage}>{selectedDistrictError}</Text>
+          ) : null}
 
           <PrimaryButton
             onPress={handleContinue}

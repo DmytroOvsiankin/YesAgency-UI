@@ -46,7 +46,7 @@ const SignUpBasicInformationScreen = () => {
     setPhoneError(phoneErr);
 
     //remove it
-    onContinue();
+    // onContinue();
 
     if (emailErr || firstErr || lastErr || phoneErr) return;
 

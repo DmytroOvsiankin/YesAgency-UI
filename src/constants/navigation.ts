@@ -7,6 +7,7 @@ export enum SCREENS {
   WelcomeScreen = 'WelcomeScreen',
   LoginByEmailScreen = 'LoginByEmailScreen',
   ForgottenPasswordScreen = 'ForgottenPasswordScreen',
+  EmailConfirmationScreen = 'EmailConfirmationScreen',
   SignUpNavigation = 'SignUpNavigation',
   SignUpBasicInformationScreen = 'SignUpBasicInformationScreen',
   SignUpSetPasswordScreen = 'SignUpSetPasswordScreen',
@@ -14,6 +15,7 @@ export enum SCREENS {
   SignUpBusinessInformationScreen = 'SignUpBusinessInformationScreen',
   SignUpPositionSelectionScreen = 'SignUpPositionSelectionScreen',
   SignUpPreferencesScreen = 'SignUpPreferencesScreen',
+  SignUpPhotoScreen = 'SignUpPhotoScreen',
 }
 
 export const LINKING_CONFIG: LinkingOptions<RootStackParamList> = {

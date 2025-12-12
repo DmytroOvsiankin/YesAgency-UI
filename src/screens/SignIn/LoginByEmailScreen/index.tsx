@@ -35,7 +35,10 @@ const LoginByEmailScreen = () => {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
       >
-        <Header title="Prihlásenie cez email" onBackPress={() => navigation.goBack()} />
+        <Header
+          title="Prihlásenie cez email"
+          onBackPress={() => navigation.navigate(SCREENS.WelcomeScreen)}
+        />
 
         {/* Form */}
         <View style={styles.form}>
